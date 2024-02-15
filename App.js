@@ -19,7 +19,7 @@ export default function App() {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [1,1],
-      quality: 1,
+      quality: .75,
     });
 
     if (!result.canceled) {
@@ -46,10 +46,11 @@ export default function App() {
       },
       body: formData
     });
-    console.log(result);
+    
     const response = await result.json();
-    console.log(response);
+    
     const mediaId = response.id;
+    console.log('Media ID: ' + mediaId);
     
     return mediaId;
   }
@@ -62,16 +63,15 @@ export default function App() {
     }
     else {
       // Show spinner
-      //setIsLoading(true);
+      setIsLoading(true);
 
       // Upload media and get the Id
       const mediaId = await uploadImage();
 
-
       //
       // Create new Post in WordPress
       //
-      /*const endPoint = host + '/wp-json/wp/v2/posts';
+      const endPoint = host + '/wp-json/wp/v2/posts';
 
       const formData = new FormData();
       formData.append('title', title);
@@ -96,7 +96,7 @@ export default function App() {
         alert('Opps, something went wrong.');
       }
 
-      setIsLoading(false);*/
+      setIsLoading(false);
     }
 
 
