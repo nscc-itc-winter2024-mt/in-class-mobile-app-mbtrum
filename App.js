@@ -2,9 +2,28 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, Pressable, TextInput, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import base64 from 'react-native-base64';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
 
+//
+// Home screen - list most 10 recent posts
+//
+function HomeScreen({ navigation }) {
+  return (
+    <View style={ styles.container }>
+      <Pressable style={styles.button} onPress={ () => navigation.navigate('Create') }>
+          <Text style={styles.buttonText}>Choose Image</Text>
+        </Pressable>
+    </View>
+  );
+}
+
+//
+// Create Screen - publish a new post to website
+//
+function CreateScreen({ navigation }) {
   const [photoAsset, setPhotoAsset] = useState(null);
   const [title, setTitle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -98,10 +117,7 @@ export default function App() {
 
       setIsLoading(false);
     }
-
-
   }
-
 
   // Return the UI
   return (
@@ -128,6 +144,22 @@ export default function App() {
       </View>
     </ScrollView>    
   );
+}
+
+
+
+//
+// Main entry point for app
+//
+export default function App() {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name='Home' component={ HomeScreen } options={{ title: 'Resplash Home'}} />
+          <Stack.Screen name='Create' component={ CreateScreen } options={{ title: 'Create'}}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
 }
 
 const styles = StyleSheet.create({
