@@ -108,8 +108,9 @@ function CreateScreen({ navigation }) {
 
       const response = await result.json();
 
-      if(response.id){
-        alert('Your post was sucessfully created. Post Id: ' + response.id);
+      if(response.id) {
+        // Navigate back to home page
+        navigation.navigate('Home');
       }
       else{
         alert('Opps, something went wrong.');
