@@ -28,8 +28,8 @@ function CreateScreen({ navigation }) {
   const [title, setTitle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const host = 'https://nscc-0304263-wordpress-photos.azurewebsites.net';
-  const username = 'W0304263';
+  const host = '';
+  const username = '';
   const apiPassword = '';
 
   // Choose an image from the camera roll
