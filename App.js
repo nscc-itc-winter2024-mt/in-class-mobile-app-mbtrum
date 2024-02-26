@@ -30,7 +30,7 @@ function CreateScreen({ navigation }) {
 
   const host = 'https://nscc-0304263-wordpress-photos.azurewebsites.net';
   const username = 'W0304263';
-  const apiPassword = 'eWZG kY62 OTzs pMqf rZZ2 GMxM';
+  const apiPassword = '';
 
   // Choose an image from the camera roll
   const pickPhoto = async () => {
