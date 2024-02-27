@@ -11,11 +11,34 @@ const Stack = createNativeStackNavigator();
 // Home screen - list most 10 recent posts
 //
 function HomeScreen({ navigation }) {
-  return (
+  const url = "https://nscc-0304263-wordpress-photos.azurewebsites.net/wp-json/wp/v2/posts?_fields=id,title,_links&_embed=author,wp:featuredmedia";
+
+  const [posts, setPosts] = useState([]);
+
+  const getPosts = async () => {
+    const result = await fetch(url);    
+    const data = await result.json();
+    setPosts(data);
+  }
+
+  if(posts.length === 0){
+    getPosts();
+  }  
+  
+  return (    
     <View style={ styles.container }>
       <Pressable style={styles.button} onPress={ () => navigation.navigate('Create') }>
-          <Text style={styles.buttonText}>Choose Image</Text>
-        </Pressable>
+          <Text style={styles.buttonText}>Add New Post</Text>
+      </Pressable>
+
+      <ScrollView style={marginTop=100}>
+       {posts.map(post => (        
+          <View key={post.id} style={paddingVertical=10}>
+            { post._embedded['wp:featuredmedia'] && <Image source={{ uri: "https://nscc-0304263-wordpress-photos.azurewebsites.net" + post._embedded['wp:featuredmedia'][0].source_url }} style={{ width: 200, height: 200 }} /> }
+            <Text>{post.title.rendered}</Text>
+          </View>
+          ))}    
+      </ScrollView>
     </View>
   );
 }
@@ -28,9 +51,9 @@ function CreateScreen({ navigation }) {
   const [title, setTitle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const host = '';
-  const username = '';
-  const apiPassword = '';
+  const host = "https://nscc-0304263-wordpress-photos.azurewebsites.net";
+  const username = 'W0304263';
+  const apiPassword = 'Zef4 11Xb vJ80 B0bp F4GJ GBOz';
 
   // Choose an image from the camera roll
   const pickPhoto = async () => {
@@ -113,7 +136,8 @@ function CreateScreen({ navigation }) {
         navigation.navigate('Home');
       }
       else{
-        alert('Opps, something went wrong.');
+        console.log('response');
+        alert('Oops, something went wrong.');        
       }
 
       setIsLoading(false);
@@ -146,7 +170,6 @@ function CreateScreen({ navigation }) {
     </ScrollView>    
   );
 }
-
 
 
 //
