@@ -7,11 +7,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
+const host = "https://nscc-0304263-wordpress-photos.azurewebsites.net";
+  const username = 'W0304263';
+  const apiPassword = 'Q5yC P9bC 1wfR 7myQ 8LHZ pTZu';
+
 //
 // Home screen - list most 10 recent posts
 //
 function HomeScreen({ navigation }) {
-  const url = "https://nscc-0304263-wordpress-photos.azurewebsites.net/wp-json/wp/v2/posts?_fields=id,title,_links&_embed=author,wp:featuredmedia";
+  const url = $host + "/wp-json/wp/v2/posts?_fields=id,title,_links&_embed=author,wp:featuredmedia";
 
   const [posts, setPosts] = useState([]);
 
@@ -34,7 +38,7 @@ function HomeScreen({ navigation }) {
       <ScrollView style={marginTop=100}>
        {posts.map(post => (        
           <View key={post.id} style={paddingVertical=10}>
-            { post._embedded['wp:featuredmedia'] && <Image source={{ uri: "https://nscc-0304263-wordpress-photos.azurewebsites.net" + post._embedded['wp:featuredmedia'][0].source_url }} style={{ width: 200, height: 200 }} /> }
+            { post._embedded['wp:featuredmedia'] && <Image source={{ uri: $host + post._embedded['wp:featuredmedia'][0].source_url }} style={{ width: 200, height: 200 }} /> }
             <Text>{post.title.rendered}</Text>
           </View>
           ))}    
@@ -51,9 +55,7 @@ function CreateScreen({ navigation }) {
   const [title, setTitle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const host = "https://nscc-0304263-wordpress-photos.azurewebsites.net";
-  const username = 'W0304263';
-  const apiPassword = 'Zef4 11Xb vJ80 B0bp F4GJ GBOz';
+  
 
   // Choose an image from the camera roll
   const pickPhoto = async () => {
@@ -74,9 +76,11 @@ function CreateScreen({ navigation }) {
     const endPoint = host + '/wp-json/wp/v2/media';
     const fileName = photoAsset.uri.split('/').pop();
     const formData = new FormData();
+    const fileType = image.type || 'image/jpeg';
 
     formData.append('file', { 
       uri: photoAsset.uri,
+      type: fileType, // Android needs this
       name: fileName
     });
 
